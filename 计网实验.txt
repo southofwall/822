@@ -1,0 +1,54 @@
+[toc]
+
+
+
+### 三重交换机实现VLAN之间的通信
+
+
+
+每个VLAN是一个广播域，虚拟局域网
+
+IP在同一网段，在同一VLAN，他们是可以互相通信的，他们就简单构成了一个**局域网**
+
+**实现通过不同vlan通信可以使不同网络段的主机能够进行通信**，举个例子吧，比如我们知道，若子网掩码为 255.255.255.0 ，IP为 192.168.10.100 的主机不能和 IP为 192.168.20.100 的主机进行通信，它们两不在同一子网。接入子网的端口设置为子网的网关即可实现两个子网的通信
+
+![img](file:///C:\Users\honor\AppData\Local\Temp\ksohtml23176\wps1.jpg)![img](file:///C:\Users\honor\AppData\Local\Temp\ksohtml23176\wps2.jpg) 
+
+两台不同子网的主机的通信问题，那么问题又来了，两个子网各有3台或者更多主机呢？好吧，加上个交换机，一台交换机和主机组成一个子网，子网设置网关为接入的路由器端口IP
+
+**主机——三层交换机——主机**
+
+**主机——交换机——三层交换机——交换机——主机**
+
+![img](file:///C:\Users\honor\AppData\Local\Temp\ksohtml23176\wps3.jpg)![img](file:///C:\Users\honor\AppData\Local\Temp\ksohtml23176\wps4.jpg) 
+
+### RIP协议
+
+<img src="C:\Users\honor\AppData\Roaming\Typora\typora-user-images\image-20230510145136323.png" alt="image-20230510145136323"  />
+
+![image-20230510145659057](C:\Users\honor\AppData\Roaming\Typora\typora-user-images\image-20230510145659057.png)
+
+### OSPF协议
+
+| RIP的问题                | 优化或解决的方式（OSPF特性）                                 |
+| ------------------------ | ------------------------------------------------------------ |
+| 收敛慢，故障恢复时间长   | “收到更新->计算路由->发送更新” 改为“收到更新->发送更新->计算路由” |
+| 缺少对全局网络拓扑的了解 | 路由器基于拓扑信息，独立计算路由                             |
+| 最多有效跳数为15         | 不限定跳数                                                   |
+| 存在选择次优路径的风险   | 将链路带宽作为选路参考值                                     |
+
+![img](https://img-blog.csdnimg.cn/20210405163047201.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl81NTYxNDY5Mg==,size_16,color_FFFFFF,t_70#pic_center)
+
+基于链路状态的路由协议（LS）
+
+### ACL原理
+
+[访问控制列表](https://www.zhihu.com/search?q=访问控制列表&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A2960144247})（ACL）是[计算机网络](https://www.zhihu.com/search?q=计算机网络&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A2960144247})中重要的**安全机制**之一
+
+标准ACL仅基于源地址来过滤网络流量，通常用于限制特定用户或网络中的特定主机的访问权限。
+
+扩展ACL则可以基于更多的条件（如目标地址、协议类型、端口号等）来限制网络流量，通常用于限制网络中不同应用程序之间的通信。
+
+### FTP和HTTP
+
+**ftp要比http早出现10年左右。 2).HTTP协议是用来浏览网站的，而FTP是用来访问和传输文件的**
